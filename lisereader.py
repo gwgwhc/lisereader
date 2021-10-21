@@ -1,4 +1,5 @@
-class LISEreader:
+# =================== class =====================
+class lisereader:
     def __init__(self):
         pass
 
@@ -19,3 +20,21 @@ class LISEreader:
         return alldata
 
     # def find_index(name):
+
+# ================== testing =====================
+
+def test_read():
+    filename="data/E143_TEline-ESR-72Ge.lpp"
+    testoutput=lisereader.read(filename)
+    print(f"""\
+-----------------------------------------------
+The lise file will be read and formatted into a
+list of strings containing the particle name,
+proton number and cross section. Example below.
+-----------------------------------------------
+The first index is: {testoutput[0]}
+-----------------------------------------------""")
+
+if __name__ == "__main__":
+    test_read()
+    print("Read ok.")
