@@ -23,7 +23,7 @@ class lisereader:
 
 # ================== testing =====================
 
-filename="data/E143_TEline-ESR-72Ge.lp"
+filename="data/E143_TEline-ESR-72Ge.lpp"
 
 def test_read(filename):
     testoutput=lisereader.read(filename)
@@ -43,5 +43,7 @@ if __name__ == "__main__":
         print("File was not found, please enter a valid path.")
         filename=input()
         test_read(filename)
+    except:
+        print("Something went wrong!")
     else:
         print("read ok.")
