@@ -1,6 +1,5 @@
 ---
-### LISE reader to isolate isotope name, charge information and cross section #
-George Hudson-Chang
+## LISE reader to isolate isotope name, charge information and cross section #
 ---
 
 **#!! Construction in Progress !!#**
