@@ -1,5 +1,4 @@
----
-## LISE reader to isolate isotope name, charge information and cross section #
+## LISE reader to isolate isotope name, charge information and cross section
 ---
 
 **#!! Construction in Progress !!#**
