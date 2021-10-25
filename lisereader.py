@@ -1,49 +1,38 @@
 # =================== class =====================
-class lisereader:
-    def __init__(self):
-        pass
+class LISEreader:
+    def __init__(self,filename):
+        self._read(filename)
 
-    def read(data_filename):
+    def __str__(self):
+        print("You have been blessed by Nikos and The Three Greeks")
 
-        with open(data_filename) as f:
+    def _read(self,filename):
+        with open(filename) as f:
             lines=f.readlines()[988:]
-            lise_range=len(lines) #to pass to next loop
-            splitlines=[line.split() for line in lines]
-            
-        alldata=[]
-        for i in range(lise_range):
-            alldata.append([splitlines[i][0],       #name
-            splitlines[i][6],                       #charge
-            float(splitlines[i][7].split(",")[0]    
-            .replace("=",''))])                     #cross section
 
-        return alldata
+        self.data=[line.split()[0:6] + line.replace('=','').split()[7].split(',') for line in lines]
 
-    # def find_index(name):
+    # def split
+    # def search
+    # def ...
+
+    def find_index(self,name):
+        return [match for match in self.data if name in match][0]
 
 # ================== testing =====================
 
 filename="data/E143_TEline-ESR-72Ge.lpp"
 
-def test_read(filename):
-    testoutput=lisereader.read(filename)
-    print(f"""\
------------------------------------------------
-The lise file will be read and formatted into a
-list of strings containing the particle name,
-proton number and cross section. Example below.
------------------------------------------------
-The first index is: {testoutput[0]}
------------------------------------------------""")
-
 if __name__ == "__main__":
     try:
-        test_read(filename)
-    except FileNotFoundError:
-        print("File was not found, please enter a valid path.")
-        filename=input()
-        test_read(filename)
+        lise_data=LISEreader(filename)
+        print(lise_data.find_index("77Br"))
     except:
-        print("Something went wrong!")
-    else:
-        print("read ok.")
+        pass
+    
+    # except FileNotFoundError:
+        # print("File was not found, please enter a valid path.")
+    #     filename=input()
+    #     test_read(filename)
+    # else:
+    #     print("read ok.")
