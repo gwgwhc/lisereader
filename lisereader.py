@@ -1,3 +1,5 @@
+import numpy as np
+
 # =================== class =====================
 class LISEreader:
     def __init__(self,filename):
@@ -16,6 +18,14 @@ class LISEreader:
     # def search
     # def ...
 
+    def get_info(self,name):
+        l=[match for match in self.data if name in match][0]
+        return l[0], l[5], l[6]
+
+    def get_info_all(self):
+        data=np.array(self.data)
+        return [data[:,0], data[:,5], data[:,6]]
+
     def find_index(self,name):
         return [match for match in self.data if name in match][0]
 
@@ -26,7 +36,8 @@ filename="data/E143_TEline-ESR-72Ge.lpp"
 if __name__ == "__main__":
     try:
         lise_data=LISEreader(filename)
-        print(lise_data.find_index("77Br"))
+        mydata=lise_data.get_info_all()
+        
     except:
         pass
     
