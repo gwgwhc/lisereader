@@ -1,4 +1,4 @@
-## LISE reader to isolate isotope name, charge information and cross section
+# LISEreader
 
 **#!! Construction in Progress !!#**
 
@@ -6,7 +6,7 @@ Requires [Barion](https://github.com/xaratustrah/barion) from Xaratustrah to pul
 
 A test file can be found in `/data` to check that the program is operational. It will automatically be executed when running `lisereader.py`.
 
-# Functions
+## Functions
 
 For all search functions, the search string should be formatted "\[element]\[A]" e.g. "80Kr"
 
@@ -14,4 +14,4 @@ For all search functions, the search string should be formatted "\[element]\[A]"
 
 `.get_info(name)` returns \[element name, A, N, Z, charge state, cross section] for the searched element
 
-`.get_info_all` returns a list of data for all the elements taken from the lise file, formatted identically to .get_info()
+`.get_info_all()` returns a list of data for all the elements taken from the lise file, formatted identically to .get_info()
