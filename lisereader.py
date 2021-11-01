@@ -9,7 +9,6 @@ class LISEreader:
         ame=amedata.AMEData()
         ame.init_ame_db
         self.ame_data=ame.ame_table
-
         self._read(filename)
 
     def __str__(self):
@@ -32,7 +31,7 @@ class LISEreader:
         return [i for i, element in enumerate(self.data) if name in element][0]
 
     def get_info(self,name):
-        # retrieves charge state and cross section from lise data
+        # retrieves charge state and yield from lise data
         index       = self.get_index(name)
         from_lise   = [int(self.data[index][5]),float(self.data[index][6])]
 
@@ -46,7 +45,7 @@ class LISEreader:
             return from_ame + from_lise
         else:
             return "check search format (e.g. \"80Kr\" )"
-            # or raise
+            # change to raise
 
     def get_lise_all(self):
         data=np.array(self.data)
@@ -62,7 +61,7 @@ lise_data=LISEreader(filename)
 def test1():
     print(lise_data.get_lise_all()[0])
     print(lise_data.get_info("80Kr"))
-    print(lise_data.get_info_all()[:5])
+    print(lise_data.get_info_all()[5:15])
 
 if __name__ == "__main__":
     try:
