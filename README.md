@@ -1,8 +1,8 @@
 # LISEreader
 
-Requires [Barion](https://github.com/xaratustrah/barion) from Xaratustrah to pull ame data.
+Requires [Barion](https://github.com/xaratustrah/barion) from @Xaratustrah to pull ame data.
 
-A test file can be found in `/data` to check that the program is operational. It will automatically be executed when running `lisereader.py`.
+A test file can be found in `/test` to check that the program is operational. It will automatically be executed when running `lisereader.py`.
 
 ### Functions
 

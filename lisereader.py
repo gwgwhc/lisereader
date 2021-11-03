@@ -58,13 +58,13 @@ class LISEreader:
 
 # ================== testing =====================
 
-filename = 'data/E143_TEline-ESR-72Ge.lpp'
+filename = 'test/E143_TEline-ESR-72Ge.lpp'
 lise_data = LISEreader(filename)
 
 
 def test1():
-    print(lise_data.get_lise_all()[0])
-    print(lise_data.get_info('8Kr'))
+    print(f"get_lise_all() index example : {lise_data.get_lise_all()[0]}")
+    print(lise_data.get_info('80Kr'))
     print(lise_data.get_info_all()[5:15])
 
 
