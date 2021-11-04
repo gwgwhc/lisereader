@@ -13,3 +13,5 @@ For all search functions, the search string should be formatted "\[element]\[A]"
 `.get_info(name)` returns \[element name, A, N, Z, charge state, yield] for the searched element
 
 `.get_info_all()` returns a list of data for all the elements taken from the lise file, formatted identically to .get_info()
+
+`.get_info_specific(index_list)` returns a list of data at the given indexes in index_list from the lise file
