@@ -55,21 +55,39 @@ class LISEreader:
 
     def get_info_all(self):
         return [self.get_info(line[0]) for line in self.data]
-
+    
+    def get_info_specific(self,param_index_list):
+        data=[]
+        for line in self.data:
+            line_data=[]
+            for i in param_index_list:
+                line_data.append(LISEreader.float_check(line[i]))
+            data.append(line_data)
+        return data
+    
+    @staticmethod
+    def float_check(value):
+        if value.replace('.','').replace('e-','').replace('e+','').isdigit():
+        # if sub('[\We]','',value).isdigit(): #slower?
+            return float(value)
+        else:
+            return value
+        
 # ================== testing =====================
 
 filename = 'test/E143_TEline-ESR-72Ge.lpp'
 lise_data = LISEreader(filename)
 
-
 def test1():
-    print(f"get_lise_all() index example : {lise_data.get_lise_all()[0]}")
-    print(lise_data.get_info('80Kr'))
-    print(lise_data.get_info_all()[5:15])
-
+    print(f"get_info(\'80Kr\'): {lise_data.get_info('80Kr')}")
+    print(f'get_info_all() snippet: {lise_data.get_info_all()[5:8]}')
+    
+def test2():
+    print(f'get_info_specific([0,1,10]) snippet: {lise_data.get_info_specific([0,1,10])[5:8]}')
 
 if __name__ == '__main__':
     try:
         test1()
+        test2()
     except:
         raise
