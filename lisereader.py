@@ -68,14 +68,13 @@ class LISEreader:
     @staticmethod
     def float_check(value):
         if value.replace('.','').replace('e-','').replace('e+','').isdigit():
-        # if sub('[\We]','',value).isdigit(): #slower?
             return float(value)
         else:
             return value
         
 # ================== testing =====================
 
-filename = 'test/E143_TEline-ESR-72Ge.lpp'
+filename = 'test/E143_TEline-ESR-72Ge.lpp'  
 lise_data = LISEreader(filename)
 
 def test1():

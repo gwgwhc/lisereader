@@ -10,7 +10,7 @@ For all search functions, the search string should be formatted "\[element]\[A]"
 
 `.get_index(name)` returns the line of the lise data that the searched element appears on
 
-`.get_info(name)` returns \[element name, A, N, Z, charge state, yield] for the searched element
+`.get_info(name)` returns \[element name, A, Z, N, charge state, yield] for the searched element
 
 `.get_info_all()` returns a list of data for all the elements taken from the lise file, formatted identically to .get_info()
 
