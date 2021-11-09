@@ -74,9 +74,6 @@ class LISEreader:
         
 # ================== testing =====================
 
-filename = 'test/E143_TEline-ESR-72Ge.lpp'  
-lise_data = LISEreader(filename)
-
 def test1():
     print(f"get_info(\'80Kr\'): {lise_data.get_info('80Kr')}")
     print(f'get_info_all() snippet: {lise_data.get_info_all()[5:8]}')
@@ -85,6 +82,8 @@ def test2():
     print(f'get_info_specific([0,1,10]) snippet: {lise_data.get_info_specific([0,1,10])[5:8]}')
 
 if __name__ == '__main__':
+    filename = 'test/E143_TEline-ESR-72Ge.lpp'  
+    lise_data = LISEreader(filename)
     try:
         test1()
         test2()
