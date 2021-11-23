@@ -6,10 +6,10 @@ from re import sub
 
 class LISEreader:
     def __init__(self, filename):
-
         ame = amedata.AMEData()
         ame.init_ame_db
         self.ame_data = ame.ame_table
+    
         self._read(filename)
 
     def _read(self, filename):
@@ -19,8 +19,6 @@ class LISEreader:
         for (i, line) in enumerate(lines):
             if '[Calculations]' in line:
                 file_start = i+1
-            # else:
-            #     raise #....
 
         self.data = [line.replace('+', '').split()[0:6] + line.replace('=', '').split()[7].split(',')
                      for line in lines[file_start:]]
@@ -43,6 +41,7 @@ class LISEreader:
         from_ame = [[self.ame_data[i][6], self.ame_data[i][5], self.ame_data[i][4], self.ame_data[i][3]]
                     for i, line in enumerate(self.ame_data) if (element in line and mass_number == line[5])][0]
 
+        # checks if returning empty list
         try:
             return from_ame + from_lise    
         except:
@@ -57,14 +56,10 @@ class LISEreader:
         return [self.get_info(line[0]) for line in self.data]
     
     def get_info_specific(self,param_index_list):
-        data=[]
-        for line in self.data:
-            line_data=[]
-            for i in param_index_list:
-                line_data.append(LISEreader.float_check(line[i]))
-            data.append(line_data)
-        return data
-    
+        return_list = [[LISEreader.float_check(line[i]) for i in param_index_list]
+                       for line in self.data]
+        return return_list
+        
     @staticmethod
     def float_check(value):
         if value.replace('.','').replace('e-','').replace('e+','').isdigit():
@@ -76,10 +71,10 @@ class LISEreader:
 
 def test1():
     print(f"get_info(\'80Kr\'): {lise_data.get_info('80Kr')}")
-    print(f'get_info_all() snippet: {lise_data.get_info_all()[5:8]}')
+    print(f'get_info_all() snippet[:3]: {lise_data.get_info_all()[:3]}')
     
 def test2():
-    print(f'get_info_specific([0,1,10]) snippet: {lise_data.get_info_specific([0,1,10])[5:8]}')
+    print(f"get_info_specific([0,1,10]) snippet[:3]: {lise_data.get_info_specific([0,1,10])[:3]}")
 
 if __name__ == '__main__':
     filename = 'test/E143_TEline-ESR-72Ge.lpp'  
