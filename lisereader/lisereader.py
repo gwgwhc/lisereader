@@ -2,14 +2,12 @@ import numpy as np
 import amedata
 from re import sub
 
-# =================== class =====================
 
 class LISEreader:
     def __init__(self, filename):
         ame = amedata.AMEData()
         ame.init_ame_db
         self.ame_data = ame.ame_table
-    
         self._read(filename)
 
     def _read(self, filename):
