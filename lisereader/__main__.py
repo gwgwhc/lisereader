@@ -1,6 +1,6 @@
 import argparse
 import logging as log
-from lisereader.lisereader import *
+from lisereader.reader import *
 
 def main():
     scriptname = 'lisereader' 
