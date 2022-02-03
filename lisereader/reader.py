@@ -65,7 +65,7 @@ class LISEreader:
         return return_list
         
     @staticmethod
-    def float_check(value):
+    def float_check(value): #returns float if not string
         if value.replace('.','').replace('e-','').replace('e+','').isdigit():
             return float(value)
         else:
@@ -77,16 +77,17 @@ def test1():
     print(f"get_info(\'80Kr\'): {lise_data.get_info('80Kr')}")
     
 def test2():
-    print(f'get_info_all() snippet[:3]: {lise_data.get_info_all()[0]}')
+    print(f'get_info_all() snippet[:3]: {lise_data.get_info_all()[:3]}')
     
 def test3():
     print(f"get_info_specific([0,1,10]) snippet[:3]: {lise_data.get_info_specific([0,1,10])[:3]}")
 
 if __name__ == '__main__':
     filename = 'E143_TEline-ESR-72Ge.lpp'
-    # filename = 'mass_Tl205_WithDeg.lpp'
     lise_data = LISEreader(filename)
     try:
+        test1()
         test2()
+        test3()
     except:
         raise
