@@ -11,14 +11,19 @@ class LISEreader:
         self._read(filename)
 
     def _read(self, filename):
-        with open(filename) as f:
+        with open(filename,encoding='latin1') as f:
             lines = f.readlines()
 
         for (i, line) in enumerate(lines):
             if '[Calculations]' in line:
                 file_start = i+1
+    
+        # finds point in line where separator changes from space to comma
+        self.centre_index = len(lines[file_start].split()) - 1
 
-        self.data = [line.replace('+', '').split()[0:6] + line.replace('=', '').split()[7].split(',')
+        # splits lines and adds to list of all data
+        self.data = [line.replace('+', '').split()[0:self.centre_index] 
+                     + line.replace('=', '').split()[self.centre_index].split(',')
                      for line in lines[file_start:]]
 
     def get_index(self, name):
@@ -31,7 +36,8 @@ class LISEreader:
     def get_info(self, name):
         # retrieves charge state and yield from lise data
         index = self.get_index(name)
-        from_lise = [int(self.data[index][5]), float(self.data[index][6])]
+        from_lise = [list(map(int, self.data[index][1:self.centre_index])),
+                     float(self.data[index][self.centre_index])]
 
         # retrieves name, A, Z, N from ame data
         element = sub('[0-9]', '', name)
@@ -69,16 +75,18 @@ class LISEreader:
 
 def test1():
     print(f"get_info(\'80Kr\'): {lise_data.get_info('80Kr')}")
-    print(f'get_info_all() snippet[:3]: {lise_data.get_info_all()[:3]}')
     
 def test2():
+    print(f'get_info_all() snippet[:3]: {lise_data.get_info_all()[0]}')
+    
+def test3():
     print(f"get_info_specific([0,1,10]) snippet[:3]: {lise_data.get_info_specific([0,1,10])[:3]}")
 
 if __name__ == '__main__':
-    filename = 'test/E143_TEline-ESR-72Ge.lpp'  
+    filename = 'E143_TEline-ESR-72Ge.lpp'
+    # filename = 'mass_Tl205_WithDeg.lpp'
     lise_data = LISEreader(filename)
     try:
-        test1()
         test2()
     except:
         raise
