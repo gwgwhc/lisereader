@@ -28,7 +28,9 @@ class LISEreader:
 
     def get_index(self, name):
         try:
-            return [i for i, element in enumerate(self.data) if name in element][0]
+            for i, element in enumerate(self.data):
+                if element[0]+'+'+element[1] == name:
+                    return i
         except:
             raise ValueError(
                 'get_index() search argument returned nothing. Check formatting (e.g. \"80Kr\")')
@@ -38,10 +40,12 @@ class LISEreader:
         index = self.get_index(name)
         from_lise = [list(map(int, self.data[index][1:self.centre_index])),
                      float(self.data[index][self.centre_index])]
-
         # retrieves name, A, Z, N from ame data
-        element = sub('[0-9]', '', name)
-        mass_number = int(sub('[^0-9]', '', name))
+        element = sub('[^a-zA-Z]', '', name)
+        aux= sub('[a-zA-Z]', '', name)
+        for i, char in enumerate(aux):
+            if char == '+': aux2=i
+        mass_number = int(aux[:aux2])
         from_ame = [[self.ame_data[i][6], self.ame_data[i][5], self.ame_data[i][4], self.ame_data[i][3]]
                     for i, line in enumerate(self.ame_data) if (element in line and mass_number == line[5])][0]
 
@@ -57,7 +61,7 @@ class LISEreader:
         return np.transpose([data[:, 0], data[:, 5], data[:, 6]])
 
     def get_info_all(self):
-        return [self.get_info(line[0]) for line in self.data]
+        return [self.get_info(line[0]+'+'+line[1]) for line in self.data]
     
     def get_info_specific(self,param_index_list):
         return_list = [[LISEreader.float_check(line[i]) for i in param_index_list]
