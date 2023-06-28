@@ -67,6 +67,11 @@ class LISEreader:
         return_list = [[LISEreader.float_check(line[i]) for i in param_index_list]
                        for line in self.data]
         return return_list
+
+    def get_yield_sorted(self):
+        name_yield = [[str(line[0]) + '+' + str(line[1]), LISEreader.float_check(line[5])] for line in self.data]
+        sorted_by_yield = sorted(name_yield, key=lambda x: x[1])
+        return sorted_by_yield
         
     @staticmethod
     def float_check(value): #returns float if not string
