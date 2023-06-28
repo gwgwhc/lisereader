@@ -69,8 +69,8 @@ class LISEreader:
         return return_list
 
     def get_yield_sorted(self):
-        name_yield = [[str(line[0]) + '+' + str(line[1]), LISEreader.float_check(line[5])] for line in self.data]
-        sorted_by_yield = sorted(name_yield, key=lambda x: x[1])
+        name_yield = [[str(line[0]) + '+' + str(line[1]), LISEreader.float_check(line[7])] for line in self.data]
+        sorted_by_yield = sorted(name_yield, key=lambda x: x[1])[::-1]
         return sorted_by_yield
         
     @staticmethod
