@@ -27,13 +27,23 @@ class LISEreader:
                      for line in lines[file_start:]]
 
     def get_index(self, name):
-        try:
-            for i, element in enumerate(self.data):
-                if element[0]+'+'+element[1] == name:
-                    return i
-        except:
-            raise ValueError(
-                'get_index() search argument returned nothing. Check formatting (e.g. \"80Kr\")')
+        returned_queries = []
+        for i, element in enumerate(self.data):
+            if element[0] + '+' + element[1] == name:
+                returned_queries.append(i)
+            elif element[0] + element[1] + '+' == name:
+                returned_queries.append(i)
+                
+        if len(returned_queries) == 1:
+            return returned_queries[0]
+        
+        elif len(returned_queries) > 1:
+            print('get_index() returned multiple queries, returning first')
+            return returned_queries[0]
+        
+        else:
+            print(element[0] + element[1] + '+')
+            raise ValueError('get_index() returned nothing. Check formatting (e.g. \"80Kr35+\")')
 
     def get_info(self, name):
         # retrieves charge state and yield from lise data
