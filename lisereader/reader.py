@@ -46,33 +46,53 @@ class LISEreader:
             raise ValueError('get_index() returned nothing. Check formatting (e.g. \"80Kr35+\")')
 
     def get_info(self, name):
-        # retrieves charge state and yield from lise data
-        index = self.get_index(name)
-        from_lise = [list(map(int, self.data[index][1:self.centre_index])),
-                     float(self.data[index][self.centre_index])]
-        # retrieves name, A, Z, N from ame data
-        element = sub('[^a-zA-Z]', '', name)
-        aux= sub('[a-zA-Z]', '', name)
-        for i, char in enumerate(aux):
-            if char == '+': aux2=i
-        mass_number = int(aux[:aux2])
-        from_ame = [[self.ame_data[i][6], self.ame_data[i][5], self.ame_data[i][4], self.ame_data[i][3]]
-                    for i, line in enumerate(self.ame_data) if (element in line and mass_number == line[5])][0]
-
-        # checks if returning empty list
         try:
-            return from_ame + from_lise    
-        except:
-            raise ValueError(
-                'get_info() search argument returned nothing. Check formatting (e.g. \"80Kr\"')
+            index = self.get_index(name)
+            from_lise = [list(map(int, self.data[index][1:self.centre_index])),
+                         float(self.data[index][self.centre_index])]
+    
+            # Extract element and mass number
+            element = sub('[^a-zA-Z]', '', name)
+            aux = sub('[a-zA-Z]', '', name)
+            aux2 = aux.index('+')
+            mass_number = int(aux[:aux2])
+    
+            # Match to AME data
+            from_ame_candidates = [[line[6], line[5], line[4], line[3]]
+                                   for line in self.ame_data
+                                   if (element == line[6] and mass_number == line[5])]
+    
+            if not from_ame_candidates:
+                raise ValueError(
+                    f"Nuclide {element}-{mass_number} not found in AME database.\n"
+                    f"Please check if the AME data needs to be updated, or verify the formatting/spelling (e.g., 'Os' vs 'OS')."
+                )
+    
+            from_ame = from_ame_candidates[0]
+            return from_ame + from_lise
+    
+        except Exception as e:
+            print(f"Error in get_info({name}): {e}")
+            raise
+
 
     def get_lise_all(self):
         data = np.array(self.data)
         return np.transpose([data[:, 0], data[:, 5], data[:, 6]])
 
     def get_info_all(self):
-        return [self.get_info(line[0]+'+'+line[1]) for line in self.data]
-    
+        #return [self.get_info(line[0] + '+' + line[1]) for line in self.data]
+        result = []
+        for line in self.data:
+            if len(line) >= 2:
+                ion_name = line[0] + '+' + line[1]
+                try:
+                    info = self.get_info(ion_name)
+                    result.append(info)
+                except Exception as e:
+                    print(f"Skipping {ion_name} due to error: {e}")
+        return result    
+
     def get_info_specific(self,param_index_list):
         return_list = [[LISEreader.float_check(line[i]) for i in param_index_list]
                        for line in self.data]
