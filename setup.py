@@ -29,6 +29,9 @@ setup(
         ]
     },
     license='GPLv3',
-    keywords=['physics', 'data', 'LISE++', ],
-    classifiers=classifiers
+    keywords=['physics', 'data', 'LISE++'],
+    classifiers=classifiers,
+    install_requires=[
+        'numpy',  
+    ],
 )
