@@ -1,0 +1,12 @@
+LICENSE
+README.md
+setup.py
+LISEreader.egg-info/PKG-INFO
+LISEreader.egg-info/SOURCES.txt
+LISEreader.egg-info/dependency_links.txt
+LISEreader.egg-info/entry_points.txt
+LISEreader.egg-info/top_level.txt
+lisereader/__init__.py
+lisereader/__main__.py
+lisereader/reader.py
+lisereader/version.py
