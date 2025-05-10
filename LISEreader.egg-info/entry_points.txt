@@ -1,2 +1,0 @@
-[console_scripts]
-lisereader = lisereader.__main__:main

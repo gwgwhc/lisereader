@@ -11,21 +11,51 @@ class LISEreader:
         self._read(filename)
 
     def _read(self, filename):
-        with open(filename,encoding='latin1') as f:
-            lines = f.readlines()
-
-        for (i, line) in enumerate(lines):
-            if '[Calculations]' in line:
-                file_start = i+1
+        import traceback
     
-        # finds point in line where separator changes from space to comma
+        with open(filename, encoding='latin1') as f:
+            lines = f.readlines()
+    
+        for i, line in enumerate(lines):
+            if '[Calculations]' in line:
+                file_start = i + 1
+                break
+        else:
+            raise ValueError("Missing [Calculations] section in file.")
+    
+        if lines[file_start].strip() == "":
+            raise ValueError(f"Line {file_start + 1} is empty. Unexpected blank line after [Calculations].")
+    
         self.centre_index = len(lines[file_start].split()) - 1
+        self.data = []
+    
+        for lineno, line in enumerate(lines[file_start:], start=file_start + 1):
+            if line.strip() == "":
+                raise ValueError(f"Error: Empty line detected at line {lineno}.")
+    
+            try:
+                line_clean = line.replace('+', '')
+                tokens = line_clean.split()
+    
+                if len(tokens) <= self.centre_index:
+                    raise ValueError(f"Line {lineno} has too few tokens: {line.strip()}")
+    
+                left_part = tokens[0:self.centre_index]
+    
+                right_tokens = line.replace('=', '').split()
+                if len(right_tokens) <= self.centre_index:
+                    raise ValueError(f"Line {lineno} missing '='-based right part: {line.strip()}")
+    
+                right_part = right_tokens[self.centre_index].split(',')
+    
+                self.data.append(left_part + right_part)
+    
+            except Exception as e:
+                print(f"Failed to parse line {lineno}: {line.strip()}")
+                traceback.print_exc()
+                raise e
 
-        # splits lines and adds to list of all data
-        self.data = [line.replace('+', '').split()[0:self.centre_index] 
-                     + line.replace('=', '').split()[self.centre_index].split(',')
-                     for line in lines[file_start:]]
-
+        
     def get_index(self, name):
         returned_queries = []
         for i, element in enumerate(self.data):
@@ -33,12 +63,11 @@ class LISEreader:
                 returned_queries.append(i)
             elif element[0] + element[1] + '+' == name:
                 returned_queries.append(i)
-                
+        #print(" name = ",name ," ",returned_queries)   
         if len(returned_queries) == 1:
             return returned_queries[0]
         
         elif len(returned_queries) > 1:
-            print('get_index() returned multiple queries, returning first')
             return returned_queries[0]
         
         else:
@@ -50,7 +79,6 @@ class LISEreader:
             index = self.get_index(name)
             from_lise = [list(map(int, self.data[index][1:self.centre_index])),
                          float(self.data[index][self.centre_index])]
-    
             # Extract element and mass number
             element = sub('[^a-zA-Z]', '', name)
             aux = sub('[a-zA-Z]', '', name)
