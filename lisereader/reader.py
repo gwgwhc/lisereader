@@ -79,12 +79,14 @@ class LISEreader:
             index = self.get_index(name)
             from_lise = [list(map(int, self.data[index][1:self.centre_index])),
                          float(self.data[index][self.centre_index])]
-            # Extract element and mass number
-            element = sub('[^a-zA-Z]', '', name)
-            aux = sub('[a-zA-Z]', '', name)
-            aux2 = aux.index('+')
-            mass_number = int(aux[:aux2])
-    
+            # 解析 name，格式如 '115Sb49+'
+            match = re.match(r'^(\d+)([A-Za-z]+)(\d+)\+$', name)
+            if not match:
+                raise ValueError(f"Invalid ion name format: {name}")
+            
+            mass_number = int(match.group(1))  # '115'
+            element = match.group(2)           # 'Sb'
+            charge = int(match.group(3))       # '49'    
             # Match to AME data
             from_ame_candidates = [[line[6], line[5], line[4], line[3]]
                                    for line in self.ame_data
@@ -111,13 +113,12 @@ class LISEreader:
         return np.transpose([data[:, 0], data[:, 5], data[:, 6]])
 
     def get_info_all(self,verbose=True):
-        #return [self.get_info(line[0] + '+' + line[1]) for line in self.data]
         result = []
         for line in self.data:
             if len(line) >= 2:
-                ion_name = line[0] + '+' + line[1]
+                ion_name = line[0]  + line[1] + '+'
                 try:
-                    info = self.get_info(ion_name,verbose=verbose)
+                    info = self.get_info(ion_name, verbose=verbose)
                     result.append(info)
                 except Exception as e:
                     if verbose:
